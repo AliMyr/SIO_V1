@@ -301,7 +301,7 @@ MonoBehaviour:
   joystickActive: 0
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   enemySearchRadius: 10
 --- !u!136 &405054990
 CapsuleCollider:

@@ -47,20 +47,22 @@ public class PlayerController : MonoBehaviour
     private void RotateCharacter()
     {
         Transform closestEnemy = GetClosestEnemy();
-        Vector3 targetDirection;
+        Vector3 targetDirection = lastMoveDirection;
 
-        targetDirection = (closestEnemy.position - transform.position).normalized;
-
-        targetDirection = lastMoveDirection;
-
+        if (closestEnemy != null)
+        {
+            targetDirection = (closestEnemy.position - transform.position).normalized;
+        }
 
         targetDirection.y = 0;
+
         if (targetDirection.magnitude > 0.1f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10);
         }
     }
+
 
     private Transform GetClosestEnemy()
     {
