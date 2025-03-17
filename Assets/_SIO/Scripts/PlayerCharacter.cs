@@ -6,7 +6,7 @@ public class PlayerCharacter : Character
 {
     public override void Initialize()
     {
-        throw new System.NotImplementedException();
+        HealthComponent = new ImmortalHealthComponent();
     }
 
     // Start is called before the first frame update
