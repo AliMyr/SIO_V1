@@ -30,7 +30,7 @@ public class HealthComponent : IHealthComponent
         }   
     }
 
-    public void SetDamage(int damage)
+    public void SetDamage(float damage)
     {
         Health -= damage;
     }

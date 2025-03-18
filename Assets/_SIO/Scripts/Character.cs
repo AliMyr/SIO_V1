@@ -17,21 +17,25 @@ public abstract class Character : MonoBehaviour
         protected set; 
     }
 
+    public IAttackComponent AttackComponent
+    {
+        get;
+        protected set;
+    }
+
     public virtual void Initialize() 
     {
         MovementComponent = new DefaultMovementComponent();
         MovementComponent.Initialize(characterData);
+
+        AttackComponent = new AttackComponent();
+        AttackComponent.Initialize(characterData);
     }
 
-    // Start is called before the first frame update
     void Start()
     {
-        
+        Initialize();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    protected abstract void Update();
 }

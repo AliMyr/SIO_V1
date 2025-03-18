@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DefaultMovementComponent : IMovementComponent
 {
-    CharacterData characterData;
+    private CharacterData characterData;
     private float speed;
     private float turnSmoothTime;
    

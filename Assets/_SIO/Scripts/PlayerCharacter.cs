@@ -9,5 +9,10 @@ public class PlayerCharacter : Character
         base.Initialize();
         HealthComponent = new ImmortalHealthComponent();
     }
+
+    protected override void Update()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

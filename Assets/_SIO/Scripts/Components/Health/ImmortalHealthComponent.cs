@@ -24,7 +24,7 @@ public class ImmortalHealthComponent : IHealthComponent
     }
 
 
-    public void SetDamage(int damage)
+    public void SetDamage(float damage)
     {
         Debug.Log("I am immortal");
     }

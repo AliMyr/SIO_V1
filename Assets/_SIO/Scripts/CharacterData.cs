@@ -16,9 +16,18 @@ public class CharacterData : MonoBehaviour
     [SerializeField]
     private float turnSmoothTime;
 
+    [SerializeField]
+    private float damage;
+
+    [SerializeField]
+    private float attackRange;
+
 
     public CharacterController CharacterController => characterController;
     public float DefaultSpeed => defaultSpeed;
     public Transform CharacterTransform => characterTransform;
     public float TurnSmoothTime => turnSmoothTime;
+    public float Damage => damage;
+    public float AttackRange => attackRange;
+
 }
