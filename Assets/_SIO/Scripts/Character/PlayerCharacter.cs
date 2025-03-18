@@ -12,7 +12,7 @@ public class PlayerCharacter : Character
 
     protected override void Update()
     {
-        if (HealthComponent != null)
+        if (HealthComponent.Health <= 0)
             return;
 
         float horizontalInput = Input.GetAxis("Horizontal");
