@@ -6,12 +6,13 @@ public class EnemyCharacter : Character
 {
     public override void Initialize()
     {
-        throw new System.NotImplementedException();
+        base.Initialize();
+        HealthComponent = new HealthComponent();
     }
 
     protected override void Update()
     {
-        throw new System.NotImplementedException();
+        
     }
 
 }

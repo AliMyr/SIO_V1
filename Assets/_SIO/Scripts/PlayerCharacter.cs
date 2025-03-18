@@ -12,7 +12,16 @@ public class PlayerCharacter : Character
 
     protected override void Update()
     {
-        throw new System.NotImplementedException();
+        if (HealthComponent != null)
+            return;
+
+        float horizontalInput = Input.GetAxis("Horizontal");
+        float verticalInput = Input.GetAxis("Vertical");
+
+        Vector3 moveDirection = new Vector3 (horizontalInput, 0, verticalInput).normalized;
+
+        MovementComponent.Move(moveDirection);
+        MovementComponent.Rotation(moveDirection);
     }
 }
 
