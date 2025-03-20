@@ -3,7 +3,18 @@ using UnityEngine;
 public abstract class Character : MonoBehaviour
 {
     [SerializeField]
+    private CharacterType characterType;
+
+    [SerializeField]
     private CharacterData characterData;
+
+    public CharacterType CharacterType 
+    {  
+        get 
+        { 
+            return CharacterType; 
+        } 
+    }
 
     public IHealthComponent HealthComponent 
     {  
