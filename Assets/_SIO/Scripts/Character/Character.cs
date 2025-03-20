@@ -43,10 +43,5 @@ public abstract class Character : MonoBehaviour
         AttackComponent.Initialize(characterData);
     }
 
-    void Start()
-    {
-        Initialize();
-    }
-
     protected abstract void Update();
 }
