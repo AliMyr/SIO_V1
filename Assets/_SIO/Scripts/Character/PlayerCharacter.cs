@@ -1,27 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCharacter : Character
 {
+    private Vector3 movementVector;
+
     public override Character CharacterTarget
     {
         get
         {
             Character target = null;
-            float minDistance = float.MaxValue;
-            List<Character> list = GameManager.Instance.CharacterFactory.ActiveCharacter;
-            for (int i = 0; i < list.Count; i++)
+            float minDistanceSqr = float.MaxValue;
+            var characters = GameManager.Instance.CharacterFactory.ActiveCharacter;
+
+            foreach (var character in characters)
             {
-                if (list[i].CharacterType == CharacterType.Player)
+                if (character.CharacterType == CharacterType.Player) continue;
+                float distanceSqr = (character.transform.position - transform.position).sqrMagnitude;
+                if (distanceSqr < minDistanceSqr)
                 {
-                    continue;
-                }
-                float distanceBetween = Vector3.Distance(list[i].transform.position, transform.position);
-                if (distanceBetween < minDistance)
-                {
-                    target = list[i];
-                    minDistance = distanceBetween;
+                    target = character;
+                    minDistanceSqr = distanceSqr;
                 }
             }
             return target;
@@ -36,30 +34,25 @@ public class PlayerCharacter : Character
 
     public override void Update()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        movementVector.Set(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+        movementVector.Normalize();
 
-        Vector3 movementVector = new Vector3(moveHorizontal, 0, moveVertical).normalized;
+        MovableComponent.Move(movementVector);
 
-        if (MovableComponent != null)
+        if (CharacterTarget != null)
         {
-            if (CharacterTarget == null)
-            {
-                MovableComponent.Rotation(movementVector);
-            }
-            else
-            {
-                Vector3 rotationDirection = CharacterTarget.transform.position - transform.position;
-                MovableComponent.Rotation(rotationDirection);
+            Vector3 rotationDirection = CharacterTarget.transform.position - transform.position;
+            MovableComponent.Rotation(rotationDirection);
 
-                if (Input.GetButtonDown("Jump") && DamageComponent != null && characterData.TimeBetweenAttackCounter <= 0)
-                {
-                    DamageComponent.MakeDamage(CharacterTarget);
-                    characterData.TimeBetweenAttackCounter = characterData.TimeBetweenAttacks;
-                }
+            if (Input.GetButtonDown("Jump") && characterData.TimeBetweenAttackCounter <= 0)
+            {
+                DamageComponent?.MakeDamage(CharacterTarget);
+                characterData.TimeBetweenAttackCounter = characterData.TimeBetweenAttacks;
             }
-
-            MovableComponent.Move(movementVector);
+        }
+        else
+        {
+            MovableComponent.Rotation(movementVector);
         }
 
         if (characterData.TimeBetweenAttackCounter > 0)

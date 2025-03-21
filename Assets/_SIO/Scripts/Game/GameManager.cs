@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -17,16 +15,14 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (Instance != null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            Initialize();
+            Destroy(gameObject);
+            return;
         }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        Initialize();
     }
 
     private void Initialize()
@@ -39,16 +35,11 @@ public class GameManager : MonoBehaviour
     {
         if (isGameActive) return;
 
-        Character player = characterFactory.GetCharacter(CharacterType.Player);
+        var player = characterFactory.GetCharacter(CharacterType.Player);
         player.transform.position = Vector3.zero;
         player.gameObject.SetActive(true);
         player.Initialize();
-
-        // Проверка и подписка на событие
-        if (player.LiveComponent != null)
-        {
-            player.LiveComponent.OnCharacterDeath += CharacterDeathHandler;
-        }
+        player.LiveComponent.OnCharacterDeath += CharacterDeathHandler;
 
         gameSessionTime = 0;
         timeBetweenEnemySpawn = gameData.TimeBetweenEnemySpawn;
@@ -60,8 +51,9 @@ public class GameManager : MonoBehaviour
     {
         if (!isGameActive) return;
 
-        gameSessionTime += Time.deltaTime;
-        timeBetweenEnemySpawn -= Time.deltaTime;
+        float deltaTime = Time.deltaTime;
+        gameSessionTime += deltaTime;
+        timeBetweenEnemySpawn -= deltaTime;
 
         if (timeBetweenEnemySpawn <= 0)
         {
@@ -79,6 +71,10 @@ public class GameManager : MonoBehaviour
     {
         if (deathCharacter == null) return;
 
+        deathCharacter.LiveComponent.OnCharacterDeath -= CharacterDeathHandler;
+        deathCharacter.gameObject.SetActive(false);
+        characterFactory.ReturnCharacter(deathCharacter);
+
         switch (deathCharacter.CharacterType)
         {
             case CharacterType.Player:
@@ -88,37 +84,18 @@ public class GameManager : MonoBehaviour
                 scoreSystem.AddScore(deathCharacter.CharacterData.ScoreCost);
                 break;
         }
-
-        deathCharacter.gameObject.SetActive(false);
-        characterFactory.ReturnCharacter(deathCharacter);
-
-        // Отписка от события
-        if (deathCharacter.LiveComponent != null)
-        {
-            deathCharacter.LiveComponent.OnCharacterDeath -= CharacterDeathHandler;
-        }
     }
 
     private void SpawnEnemy()
     {
-        Character enemy = characterFactory.GetCharacter(CharacterType.DefaultEnemy);
-        Vector3 playerPosition = characterFactory.Player.transform.position;
-        enemy.transform.position = new Vector3(playerPosition.x + GetOffset(), 0, playerPosition.z + GetOffset());
+        var enemy = characterFactory.GetCharacter(CharacterType.DefaultEnemy);
+        Vector3 playerPos = characterFactory.Player.transform.position;
+        float offsetX = Random.Range(gameData.MinSpawnOffset, gameData.MaxSpawnOffset) * (Random.value > 0.5f ? 1 : -1);
+        float offsetZ = Random.Range(gameData.MinSpawnOffset, gameData.MaxSpawnOffset) * (Random.value > 0.5f ? 1 : -1);
+        enemy.transform.position = new Vector3(playerPos.x + offsetX, 0, playerPos.z + offsetZ);
         enemy.gameObject.SetActive(true);
         enemy.Initialize();
-
-        // Проверка и подписка на событие
-        if (enemy.LiveComponent != null)
-        {
-            enemy.LiveComponent.OnCharacterDeath += CharacterDeathHandler;
-        }
-
-        float GetOffset()
-        {
-            bool isPlus = Random.Range(0, 100) % 2 == 0;
-            float offset = Random.Range(gameData.MinSpawnOffset, gameData.MaxSpawnOffset);
-            return isPlus ? offset : -offset;
-        }
+        enemy.LiveComponent.OnCharacterDeath += CharacterDeathHandler;
     }
 
     private void GameVictory()

@@ -5,41 +5,30 @@ public class CharacterLiveComponent : ILiveComponent
 {
     private Character selfCharacter;
     private float currentHealth;
+    private const float DefaultMaxHealth = 50f;
 
     public event Action<Character> OnCharacterDeath;
 
-    public float MaxHealth 
+    public float MaxHealth { get => DefaultMaxHealth; set { } }
+    public float Health
     {
-        get => 50; 
-        set { return; } 
-    }
-
-    public float Health 
-    { 
-        get => currentHealth; 
-        set 
-        { 
-            currentHealth = value;
-            if (currentHealth > MaxHealth)
-                currentHealth = MaxHealth;
-
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                SetDeath();
-            }
-        } 
+        get => currentHealth;
+        set
+        {
+            currentHealth = Mathf.Clamp(value, 0, DefaultMaxHealth);
+            if (currentHealth <= 0) SetDeath();
+        }
     }
 
     public CharacterLiveComponent()
     {
-        Health = MaxHealth;
+        currentHealth = DefaultMaxHealth;
     }
 
     public void SetDamage(float damage)
     {
         Health -= damage;
-        Debug.Log("Get damage = " + damage);
+        Debug.Log($"Get damage = {damage}");
     }
 
     private void SetDeath()

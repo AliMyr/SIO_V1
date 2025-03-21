@@ -4,15 +4,11 @@ public class CharacterMovementComponent : IMovable
 {
     private CharacterData characterData;
     private float speed;
-    public float Speed 
-    { 
+
+    public float Speed
+    {
         get => speed;
-        set
-        {
-            if (value < 0)
-                return;
-            speed = value;
-        }
+        set => speed = Mathf.Max(0, value);
     }
 
     public void Initialize(CharacterData characterData)
@@ -23,8 +19,7 @@ public class CharacterMovementComponent : IMovable
 
     public void Move(Vector3 direction)
     {
-        if (direction == Vector3.zero)
-            return;
+        if (direction.sqrMagnitude < 0.01f) return;
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
         Vector3 move = Quaternion.Euler(0, targetAngle, 0) * Vector3.forward;
         characterData.CharacterController.Move(move * Speed * Time.deltaTime);
@@ -32,11 +27,11 @@ public class CharacterMovementComponent : IMovable
 
     public void Rotation(Vector3 direction)
     {
-        if (direction == Vector3.zero)
-            return;
-
-        float smooth = 0.1f;
+        if (direction.sqrMagnitude < 0.01f) return;
         float targetAngle = Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg;
-        float angle = Mathf.SmoothDampAngle(characterData.CharacterTransform.eulerAngles.y, targetAngle, ref smooth, smooth);
+        float currentAngle = characterData.CharacterTransform.eulerAngles.y;
+        float smoothVelocity = 0f;
+        float angle = Mathf.SmoothDampAngle(currentAngle, targetAngle, ref smoothVelocity, 0.1f);
+        characterData.CharacterTransform.rotation = Quaternion.Euler(0, angle, 0);
     }
 }

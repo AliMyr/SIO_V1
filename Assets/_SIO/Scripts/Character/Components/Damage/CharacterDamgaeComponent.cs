@@ -1,10 +1,10 @@
 public class CharacterDamageComponent : IDamageComponent
 {
-    public float Damage => 10;
+    private const float DefaultDamage = 10f;
+    public float Damage => DefaultDamage;
 
     public void MakeDamage(Character characterTarget)
     {
-        if (characterTarget.LiveComponent != null) 
-            characterTarget.LiveComponent.SetDamage(Damage);
+        characterTarget?.LiveComponent?.SetDamage(DefaultDamage);
     }
 }
