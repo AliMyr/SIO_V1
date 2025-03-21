@@ -6,19 +6,15 @@ public class EnemyCharacter : Character
 {
     [SerializeField] private AiState currentState;
 
-    private float timeBetweenAttackCounter = 0;
-
-    public override Character CharacterTarget => 
+    public override Character CharacterTarget =>
         GameManager.Instance.CharacterFactory.Player;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        LiveComponent = new CharacterLiveComponent();
+        MovableComponent.Initialize(characterData);
         LiveComponent.Initialize(this);
-
-        DamageComponent = new CharacterDamageComponent();
     }
 
     public override void Update()
@@ -36,14 +32,14 @@ public class EnemyCharacter : Character
                 MovableComponent.Rotation(direction);
 
                 if (Vector3.Distance(CharacterTarget.transform.position, transform.position) < 3
-                    && timeBetweenAttackCounter <= 0) 
+                    && characterData.TimeBetweenAttackCounter <= 0)
                 {
                     DamageComponent.MakeDamage(CharacterTarget);
-                    timeBetweenAttackCounter = characterData.TimeBetweenAttacks;
+                    characterData.TimeBetweenAttackCounter = characterData.TimeBetweenAttacks;
                 }
 
-                if (timeBetweenAttackCounter > 0)
-                    timeBetweenAttackCounter -= Time.deltaTime;
+                if (characterData.TimeBetweenAttackCounter > 0)
+                    characterData.TimeBetweenAttackCounter -= Time.deltaTime;
 
                 break;
         }

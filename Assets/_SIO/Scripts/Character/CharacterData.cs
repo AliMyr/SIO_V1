@@ -9,16 +9,16 @@ public class CharacterData : MonoBehaviour
     [SerializeField] private float timeBetweenAttacks;
     [SerializeField] private Transform characterTransform;
     [SerializeField] private CharacterController characterController;
+    private float timeBetweenAttackCounter;
 
     public float DefaultSpeed => speed;
     public int ScoreCost => scoreCost;
     public float TimeBetweenAttacks => timeBetweenAttacks;
     public Transform CharacterTransform => characterTransform;
-    public CharacterController CharacterController
+    public CharacterController CharacterController => characterController;
+    public float TimeBetweenAttackCounter
     {
-        get 
-        { 
-            return characterController; 
-        } 
+        get => timeBetweenAttackCounter;
+        set => timeBetweenAttackCounter = value;
     }
 }

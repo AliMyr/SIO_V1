@@ -31,13 +31,7 @@ public class PlayerCharacter : Character
     public override void Initialize()
     {
         base.Initialize();
-
-        MovableComponent = new CharacterMovementComponent();
         MovableComponent.Initialize(characterData);
-
-        LiveComponent = new CharacterLiveComponent();
-
-        DamageComponent = new CharacterDamageComponent();
     }
 
     public override void Update()
@@ -58,13 +52,17 @@ public class PlayerCharacter : Character
                 Vector3 rotationDirection = CharacterTarget.transform.position - transform.position;
                 MovableComponent.Rotation(rotationDirection);
 
-                if (Input.GetButtonDown("Jump") && DamageComponent != null)
+                if (Input.GetButtonDown("Jump") && DamageComponent != null && characterData.TimeBetweenAttackCounter <= 0)
                 {
                     DamageComponent.MakeDamage(CharacterTarget);
+                    characterData.TimeBetweenAttackCounter = characterData.TimeBetweenAttacks;
                 }
             }
 
             MovableComponent.Move(movementVector);
         }
+
+        if (characterData.TimeBetweenAttackCounter > 0)
+            characterData.TimeBetweenAttackCounter -= Time.deltaTime;
     }
 }

@@ -183,6 +183,7 @@ MonoBehaviour:
   timeBetweenAttacks: 1
   characterTransform: {fileID: 8859024616249670733}
   characterController: {fileID: 3618398809851077949}
+  timeBetweenAttackCounter: 1
 --- !u!114 &1190535913380452987
 MonoBehaviour:
   m_ObjectHideFlags: 0
