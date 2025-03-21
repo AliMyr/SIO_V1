@@ -10,8 +10,6 @@ public class EnemyCharacter : Character
     public override void Initialize()
     {
         base.Initialize();
-        MovableComponent.Initialize(characterData);
-        LiveComponent.Initialize(this);
     }
 
     public override void Update()

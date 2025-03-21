@@ -4,11 +4,8 @@ using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
-    [SerializeField]
-    private CharacterType characterType;
-
-    [SerializeField]
-    protected CharacterData characterData;
+    [SerializeField] private CharacterType characterType;
+    [SerializeField] protected CharacterData characterData;
 
     public virtual Character CharacterTarget { get; }
     public CharacterType CharacterType => characterType;
@@ -20,8 +17,11 @@ public abstract class Character : MonoBehaviour
     public virtual void Initialize()
     {
         MovableComponent = new CharacterMovementComponent();
-        LiveComponent = new CharacterLiveComponent();
-        DamageComponent = new CharacterDamageComponent();
+        LiveComponent = new CharacterLiveComponent(characterData?.MaxHealth ?? 50f);
+        DamageComponent = new CharacterDamageComponent(characterData?.Damage ?? 10f);
+
+        MovableComponent.Initialize(characterData);
+        LiveComponent.Initialize(this);
     }
 
     public abstract void Update();
