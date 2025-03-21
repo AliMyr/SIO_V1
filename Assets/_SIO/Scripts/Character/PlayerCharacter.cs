@@ -10,12 +10,13 @@ public class PlayerCharacter : Character
         {
             Character target = null;
             float minDistance = float.MaxValue;
-            List<Character> list = GameManager.Instance.CharacterFactory.ActiveCharacters;
-            for (int i = 0; i < list.Count; i++) 
+            List<Character> list = GameManager.Instance.CharacterFactory.ActiveCharacter;
+            for (int i = 0; i < list.Count; i++)
             {
                 if (list[i].CharacterType == CharacterType.Player)
+                {
                     continue;
-
+                }
                 float distanceBetween = Vector3.Distance(list[i].transform.position, transform.position);
                 if (distanceBetween < minDistance)
                 {
@@ -23,39 +24,47 @@ public class PlayerCharacter : Character
                     minDistance = distanceBetween;
                 }
             }
-
             return target;
         }
     }
+
     public override void Initialize()
     {
         base.Initialize();
-        HealthComponent = new ImmortalHealthComponent();
+
+        MovableComponent = new CharacterMovementComponent();
+        MovableComponent.Initialize(characterData);
+
+        LiveComponent = new CharacterLiveComponent();
+
+        DamageComponent = new CharacterDamageComponent();
     }
 
-    protected override void Update()
+    public override void Update()
     {
-        if (HealthComponent.Health <= 0)
-            return;
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        float moveVertical = Input.GetAxis("Vertical");
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
+        Vector3 movementVector = new Vector3(moveHorizontal, 0, moveVertical).normalized;
 
-        Vector3 moveDirection = new Vector3 (horizontalInput, 0, verticalInput).normalized;
-
-        if (CharacterTarget == null)
+        if (MovableComponent != null)
         {
-            MovementComponent.Rotation(moveDirection);
-        }
-        else 
-        {
-            Vector3 rotationDirection = CharacterTarget.transform.position - transform.position;
-            MovementComponent.Rotation(rotationDirection);
+            if (CharacterTarget == null)
+            {
+                MovableComponent.Rotation(movementVector);
+            }
+            else
+            {
+                Vector3 rotationDirection = CharacterTarget.transform.position - transform.position;
+                MovableComponent.Rotation(rotationDirection);
 
-            AttackComponent.MakeDamage(CharacterTarget);
-        }
+                if (Input.GetButtonDown("Jump") && DamageComponent != null)
+                {
+                    DamageComponent.MakeDamage(CharacterTarget);
+                }
+            }
 
-        MovementComponent.Move(moveDirection);
+            MovableComponent.Move(movementVector);
+        }
     }
 }
-

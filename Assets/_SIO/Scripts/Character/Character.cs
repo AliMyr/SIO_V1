@@ -1,28 +1,32 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
     [SerializeField]
     private CharacterType characterType;
+
     [SerializeField]
     protected CharacterData characterData;
 
     public virtual Character CharacterTarget { get; }
-    public CharacterData CharacterData {  get { return characterData; } }
-    public CharacterType CharacterType {  get { return characterType; } }
-    public IHealthComponent HealthComponent {  get; protected set; }
-    public IMovementComponent MovementComponent {   get; protected set; }
-    public IAttackComponent AttackComponent{   get; protected set; }
+    public CharacterType CharacterType => characterType;
+    public CharacterData CharacterData => characterData;
+    public IMovable MovableComponent { get; protected set; }
+    public ILiveComponent LiveComponent { get; protected set; }
+    public IDamageComponent DamageComponent { get; protected set; }
 
-
-    public virtual void Initialize() 
+    public virtual void Initialize()
     {
-        MovementComponent = new DefaultMovementComponent();
-        MovementComponent.Initialize(characterData);
-
-        AttackComponent = new AttackComponent();
-        AttackComponent.Initialize(characterData);
+        MovableComponent = new CharacterMovementComponent();
+        MovableComponent.Initialize(characterData);
     }
 
-    protected abstract void Update();
+    public abstract void Update();
+
+    public void Enqueue(Character character)
+    {
+
+    }
 }

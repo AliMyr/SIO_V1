@@ -1,45 +1,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class EnemyCharacter : Character
 {
-    [SerializeField]
-    private AiState aiState;
+    [SerializeField] private AiState currentState;
 
-    public override Character CharacterTarget => GameManager.Instance.CharacterFactory.Player;
+    private float timeBetweenAttackCounter = 0;
+
+    public override Character CharacterTarget => 
+        GameManager.Instance.CharacterFactory.Player;
 
     public override void Initialize()
     {
         base.Initialize();
-        HealthComponent = new HealthComponent();
 
-        AttackComponent = new AttackComponent();
+        LiveComponent = new CharacterLiveComponent();
+        LiveComponent.Initialize(this);
+
+        DamageComponent = new CharacterDamageComponent();
     }
 
-    protected override void Update()
+    public override void Update()
     {
-        if (HealthComponent.Health <= 0)
-            return;
-
-        switch (aiState) 
+        switch (currentState)
         {
             case AiState.None:
-                return;
-            case AiState.Idle:
-                return;
+                break;
+
             case AiState.MoveToTarget:
-                Vector3 moveDirection = CharacterTarget.transform.position - transform.position;
-                moveDirection.Normalize();
+                Vector3 direction = CharacterTarget.transform.position - transform.position;
+                direction.Normalize();
 
-                MovementComponent.Move(moveDirection);
-                MovementComponent.Rotation(moveDirection);
+                MovableComponent.Move(direction);
+                MovableComponent.Rotation(direction);
 
-                AttackComponent.MakeDamage(CharacterTarget);
+                if (Vector3.Distance(CharacterTarget.transform.position, transform.position) < 3
+                    && timeBetweenAttackCounter <= 0) 
+                {
+                    DamageComponent.MakeDamage(CharacterTarget);
+                    timeBetweenAttackCounter = characterData.TimeBetweenAttacks;
+                }
 
-                return;
+                if (timeBetweenAttackCounter > 0)
+                    timeBetweenAttackCounter -= Time.deltaTime;
+
+                break;
         }
     }
-
 }

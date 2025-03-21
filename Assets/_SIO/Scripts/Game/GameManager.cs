@@ -4,31 +4,27 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] 
-    private CharacterFactory characterFactory;
-    [SerializeField]
-    private GameData gameData;
+    [SerializeField] private GameData gameData;
+    [SerializeField] private CharacterFactory characterFactory;
 
     private ScoreSystem scoreSystem;
-
     private float gameSessionTime;
     private float timeBetweenEnemySpawn;
     private bool isGameActive;
-    
-    public static GameManager Instance { get; private set; }
 
+    public static GameManager Instance { get; private set; }
     public CharacterFactory CharacterFactory => characterFactory;
 
     private void Awake()
     {
-        if (Instance == null) 
-        { 
+        if (Instance == null)
+        {
             Instance = this;
             DontDestroyOnLoad(gameObject);
             Initialize();
         }
-        else 
-        { 
+        else
+        {
             Destroy(this.gameObject);
         }
     }
@@ -41,29 +37,28 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
-        if (isGameActive)
-        {
-            return;
-        }
+        if (isGameActive) return;
 
         Character player = characterFactory.GetCharacter(CharacterType.Player);
         player.transform.position = Vector3.zero;
         player.gameObject.SetActive(true);
         player.Initialize();
-        player.HealthComponent.OnCharacterDeath += CharacterDeathHandler;
+
+        // Проверка и подписка на событие
+        if (player.LiveComponent != null)
+        {
+            player.LiveComponent.OnCharacterDeath += CharacterDeathHandler;
+        }
 
         gameSessionTime = 0;
         timeBetweenEnemySpawn = gameData.TimeBetweenEnemySpawn;
-
-        scoreSystem.StartGame();
-
-        isGameActive=true;
+        scoreSystem.startGame();
+        isGameActive = true;
     }
 
     private void Update()
     {
-        if (!isGameActive)
-            { return; }
+        if (!isGameActive) return;
 
         gameSessionTime += Time.deltaTime;
         timeBetweenEnemySpawn -= Time.deltaTime;
@@ -74,7 +69,7 @@ public class GameManager : MonoBehaviour
             timeBetweenEnemySpawn = gameData.TimeBetweenEnemySpawn;
         }
 
-        if (gameSessionTime >= gameData.SessionTimeSeconds)
+        if (gameSessionTime >= gameData.SessionTimeSecond)
         {
             GameVictory();
         }
@@ -82,7 +77,9 @@ public class GameManager : MonoBehaviour
 
     private void CharacterDeathHandler(Character deathCharacter)
     {
-        switch (deathCharacter.CharacterType) 
+        if (deathCharacter == null) return;
+
+        switch (deathCharacter.CharacterType)
         {
             case CharacterType.Player:
                 GameOver();
@@ -95,7 +92,11 @@ public class GameManager : MonoBehaviour
         deathCharacter.gameObject.SetActive(false);
         characterFactory.ReturnCharacter(deathCharacter);
 
-        deathCharacter.HealthComponent.OnCharacterDeath -= CharacterDeathHandler;
+        // Отписка от события
+        if (deathCharacter.LiveComponent != null)
+        {
+            deathCharacter.LiveComponent.OnCharacterDeath -= CharacterDeathHandler;
+        }
     }
 
     private void SpawnEnemy()
@@ -105,14 +106,18 @@ public class GameManager : MonoBehaviour
         enemy.transform.position = new Vector3(playerPosition.x + GetOffset(), 0, playerPosition.z + GetOffset());
         enemy.gameObject.SetActive(true);
         enemy.Initialize();
-        enemy.HealthComponent.OnCharacterDeath += CharacterDeathHandler;
+
+        // Проверка и подписка на событие
+        if (enemy.LiveComponent != null)
+        {
+            enemy.LiveComponent.OnCharacterDeath += CharacterDeathHandler;
+        }
 
         float GetOffset()
         {
             bool isPlus = Random.Range(0, 100) % 2 == 0;
             float offset = Random.Range(gameData.MinSpawnOffset, gameData.MaxSpawnOffset);
-
-            return (isPlus) ? offset : (-1 * offset);
+            return isPlus ? offset : -offset;
         }
     }
 
@@ -120,7 +125,7 @@ public class GameManager : MonoBehaviour
     {
         scoreSystem.EndGame();
         Debug.Log("Victory");
-        isGameActive = false ;
+        isGameActive = false;
     }
 
     private void GameOver()

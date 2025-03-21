@@ -4,34 +4,21 @@ using UnityEngine;
 
 public class CharacterData : MonoBehaviour
 {
-    [SerializeField]
-    private int scoreCost;
+    [SerializeField] private float speed;
+    [SerializeField] private int scoreCost;
+    [SerializeField] private float timeBetweenAttacks;
+    [SerializeField] private Transform characterTransform;
+    [SerializeField] private CharacterController characterController;
 
-    [SerializeField]
-    private CharacterController characterController;
-
-    [SerializeField]
-    private float defaultSpeed;
-
-    [SerializeField]
-    private Transform characterTransform;
-
-    [SerializeField]
-    private float turnSmoothTime;
-
-    [SerializeField]
-    private float damage;
-
-    [SerializeField]
-    private float attackRange;
-
-
+    public float DefaultSpeed => speed;
     public int ScoreCost => scoreCost;
-    public CharacterController CharacterController => characterController;
-    public float DefaultSpeed => defaultSpeed;
+    public float TimeBetweenAttacks => timeBetweenAttacks;
     public Transform CharacterTransform => characterTransform;
-    public float TurnSmoothTime => turnSmoothTime;
-    public float Damage => damage;
-    public float AttackRange => attackRange;
-
+    public CharacterController CharacterController
+    {
+        get 
+        { 
+            return characterController; 
+        } 
+    }
 }

@@ -394,11 +394,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 207404501}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 30b552665ed47ed43beeec013cc2dc85, type: 3}
+  m_Script: {fileID: 11500000, guid: 065344fe6eb2dbc43960cd7ffa7c5dfb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCharacterPrefab: {fileID: 3328808133274620077, guid: 1028dc16746be9e488a66340cf6d8d28, type: 3}
-  enemyCharacterPrefab: {fileID: 5826157380243213503, guid: 549a8bb2425d72841a75ce1da495718f, type: 3}
+  playerCharacterPrefab: {fileID: 1291763919077626691, guid: 0d906ffcc48509a4ba599f2083b96a62, type: 3}
+  enemyCharacterPrefab: {fileID: 1190535913380452987, guid: 1eae0d221f91d32438daf4e8a7f9d8a1, type: 3}
 --- !u!4 &207404503
 Transform:
   m_ObjectHideFlags: 0
@@ -3157,11 +3157,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1895248593}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 479993c36e9067d48a52386d2b954488, type: 3}
+  m_Script: {fileID: 11500000, guid: dbee271cf703f154bb6c730c9a8adbd9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterFactory: {fileID: 207404502}
   gameData: {fileID: 11400000, guid: a5b13ed1c88776f4f998cf3ec9f1a9e2, type: 2}
+  characterFactory: {fileID: 207404502}
 --- !u!4 &1895248595
 Transform:
   m_ObjectHideFlags: 0
