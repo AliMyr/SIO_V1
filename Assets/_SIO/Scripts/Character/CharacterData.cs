@@ -5,6 +5,9 @@ using UnityEngine;
 public class CharacterData : MonoBehaviour
 {
     [SerializeField]
+    private int scoreCost;
+
+    [SerializeField]
     private CharacterController characterController;
 
     [SerializeField]
@@ -23,6 +26,7 @@ public class CharacterData : MonoBehaviour
     private float attackRange;
 
 
+    public int ScoreCost => scoreCost;
     public CharacterController CharacterController => characterController;
     public float DefaultSpeed => defaultSpeed;
     public Transform CharacterTransform => characterTransform;

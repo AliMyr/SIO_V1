@@ -4,35 +4,16 @@ public abstract class Character : MonoBehaviour
 {
     [SerializeField]
     private CharacterType characterType;
-
     [SerializeField]
-    private CharacterData characterData;
+    protected CharacterData characterData;
 
-    public CharacterType CharacterType 
-    {  
-        get 
-        { 
-            return CharacterType; 
-        } 
-    }
+    public virtual Character CharacterTarget { get; }
+    public CharacterData CharacterData {  get { return characterData; } }
+    public CharacterType CharacterType {  get { return characterType; } }
+    public IHealthComponent HealthComponent {  get; protected set; }
+    public IMovementComponent MovementComponent {   get; protected set; }
+    public IAttackComponent AttackComponent{   get; protected set; }
 
-    public IHealthComponent HealthComponent 
-    {  
-        get; 
-        protected set; 
-    }
-
-    public IMovementComponent MovementComponent 
-    {
-        get; 
-        protected set; 
-    }
-
-    public IAttackComponent AttackComponent
-    {
-        get;
-        protected set;
-    }
 
     public virtual void Initialize() 
     {

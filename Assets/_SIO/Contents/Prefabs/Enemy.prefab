@@ -27,13 +27,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2740337048622412805}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.793353, y: -0, z: -0, w: 0.60876197}
-  m_LocalPosition: {x: 0, y: 1.27, z: 0.99}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.4999998, y: -0.49999937, z: -0.5000001, w: 0.5000007}
+  m_LocalPosition: {x: 0, y: 1.487, z: 0.486}
+  m_LocalScale: {x: 0.11612, y: 0.26258218, z: 0.26344144}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6658300770354882492}
-  m_LocalEulerAnglesHint: {x: -105, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: -90}
 --- !u!33 &2804018903602209682
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -224,7 +224,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6658300770354882492}
   - component: {fileID: 2055329522767055667}
-  - component: {fileID: 5813665328354713598}
   - component: {fileID: 5826157380243213503}
   - component: {fileID: 8982709263928407999}
   m_Layer: 0
@@ -243,7 +242,7 @@ Transform:
   m_GameObject: {fileID: 3825006694336230801}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.35, y: 0, z: -0.64}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -277,29 +276,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!136 &5813665328354713598
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3825006694336230801}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!114 &5826157380243213503
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -312,9 +288,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c36e8a4e61520184a859506ba0cc9495, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterType: 2
   characterData: {fileID: 8982709263928407999}
-  characterTarget: {fileID: 0}
-  aiState: 0
+  aiState: 2
 --- !u!114 &8982709263928407999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -327,9 +303,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf8dedb85d8a38b44bdc7e0dbb733d2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  scoreCost: 10
   characterController: {fileID: 2055329522767055667}
   defaultSpeed: 3
   characterTransform: {fileID: 6658300770354882492}
   turnSmoothTime: 0.1
-  damage: 0
-  attackRange: 0
+  damage: 10
+  attackRange: 1

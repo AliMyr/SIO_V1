@@ -6,14 +6,16 @@ using UnityEngine.EventSystems;
 public class EnemyCharacter : Character
 {
     [SerializeField]
-    private Character characterTarget;
-    [SerializeField]
     private AiState aiState;
+
+    public override Character CharacterTarget => GameManager.Instance.CharacterFactory.Player;
 
     public override void Initialize()
     {
         base.Initialize();
         HealthComponent = new HealthComponent();
+
+        AttackComponent = new AttackComponent();
     }
 
     protected override void Update()
@@ -28,13 +30,14 @@ public class EnemyCharacter : Character
             case AiState.Idle:
                 return;
             case AiState.MoveToTarget:
-                Vector3 moveDirection = characterTarget.transform.position - transform.position;
+                Vector3 moveDirection = CharacterTarget.transform.position - transform.position;
                 moveDirection.Normalize();
 
                 MovementComponent.Move(moveDirection);
                 MovementComponent.Rotation(moveDirection);
 
-                AttackComponent.MakeDamage(characterTarget);
+                AttackComponent.MakeDamage(CharacterTarget);
+
                 return;
         }
     }

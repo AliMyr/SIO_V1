@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +24,12 @@ public class ImmortalHealthComponent : IHealthComponent
         }
     }
 
+    public event Action<Character> OnCharacterDeath;
+
+    public void Initialize(Character selfCharacter)
+    {
+        //throw new NotImplementedException();
+    }
 
     public void SetDamage(float damage)
     {
