@@ -7,6 +7,7 @@ public class ImmortalLiveComponent : ILiveComponent
     float ILiveComponent.Health { get => 1; set { } }
 
     public event Action<Character> OnCharacterDeath;
+    public event Action<Character> OnCharacterHealthChange;
 
     public void Initialize(Character selfCharacter)
     {

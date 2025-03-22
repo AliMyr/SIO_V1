@@ -4,6 +4,7 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private GameData gameData;
     [SerializeField] private CharacterFactory characterFactory;
+    [SerializeField] private WindowsService windowsService;
 
     private ScoreSystem scoreSystem;
     private float gameSessionTime;
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
 
     public static GameManager Instance { get; private set; }
     public CharacterFactory CharacterFactory => characterFactory;
+    public WindowsService WindowsService => windowsService;
 
     private void Awake()
     {
@@ -29,6 +31,7 @@ public class GameManager : MonoBehaviour
     {
         scoreSystem = new ScoreSystem();
         isGameActive = false;
+        windowsService.Initialize();
     }
 
     public void StartGame()
