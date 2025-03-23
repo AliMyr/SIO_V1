@@ -26,12 +26,6 @@ public class PlayerCharacter : Character
         }
     }
 
-    public override void Initialize()
-    {
-        base.Initialize();
-        MovableComponent.Initialize(CharacterTarget, CharacterData);
-    }
-
     public override void Update()
     {
         if (!LiveComponent.IsAlive || !GameManager.Instance.IsGameActive) return;

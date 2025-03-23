@@ -3,8 +3,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CharacterData", menuName = "Game/CharacterData")]
 public class CharacterData : ScriptableObject
 {
-    [SerializeField] private CharacterController characterController;
-    [SerializeField] private Transform characterTransform; 
     [SerializeField] private float speed = 5f;
     [SerializeField] private float maxHealth = 50f;
     [SerializeField] private float damage = 10f;
@@ -12,9 +10,6 @@ public class CharacterData : ScriptableObject
     [SerializeField] private float timeBetweenAttacks = 1f;
 
     private float timeBetweenAttackCounter;
-
-    public CharacterController CharacterController => characterController;
-    public Transform CharacterTransform => characterTransform;
 
     public float Speed => speed;
     public float MaxHealth => maxHealth;

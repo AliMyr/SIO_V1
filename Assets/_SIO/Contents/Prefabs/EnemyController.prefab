@@ -115,7 +115,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8859024616249670733}
   - component: {fileID: 3618398809851077949}
-  - component: {fileID: 1353011034820835487}
   - component: {fileID: 1190535913380452987}
   m_Layer: 0
   m_Name: EnemyController
@@ -166,24 +165,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &1353011034820835487
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4773682289635352286}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0757363be2c89ce4ba5f596aae31caf2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3
-  scoreCost: 10
-  timeBetweenAttacks: 1
-  characterTransform: {fileID: 8859024616249670733}
-  characterController: {fileID: 3618398809851077949}
-  timeBetweenAttackCounter: 1
 --- !u!114 &1190535913380452987
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,5 +178,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterType: 2
-  characterData: {fileID: 1353011034820835487}
+  characterData: {fileID: 11400000, guid: f8886339249474d408278629a4845c15, type: 2}
+  characterController: {fileID: 3618398809851077949}
   currentState: 1

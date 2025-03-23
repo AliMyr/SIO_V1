@@ -74,6 +74,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterType: 1
   characterData: {fileID: 11400000, guid: c2e78642d156d544dbb564004a443769, type: 2}
+  characterController: {fileID: 4783233048585648788}
 --- !u!1 &7201006280858521852
 GameObject:
   m_ObjectHideFlags: 0

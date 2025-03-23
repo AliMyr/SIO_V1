@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameData")]
+[CreateAssetMenu(fileName = "GameData", menuName = "Game/GameData")]
 public class GameData : ScriptableObject
 {
     [SerializeField] private int sessionTimeMinutes = 15;

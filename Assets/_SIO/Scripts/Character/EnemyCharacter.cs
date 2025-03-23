@@ -7,11 +7,6 @@ public class EnemyCharacter : Character
 
     public override Character CharacterTarget => GameManager.Instance.CharacterFactory.Player;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-    }
-
     public override void Update()
     {
         if (!LiveComponent.IsAlive || !GameManager.Instance.IsGameActive) return;
