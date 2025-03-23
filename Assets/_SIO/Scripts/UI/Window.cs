@@ -37,10 +37,14 @@ public abstract class Window : MonoBehaviour
             OpenEnd();
     }
 
-    public void Hide(bool isImmediately) 
+    public void Hide(bool isImmediately)
     {
         CloseStart();
-        WindowAnimator.Play(isImmediately ? hiddenAnimationName : closeAnimationName);
+
+        if (WindowAnimator != null && gameObject.activeInHierarchy)
+        {
+            WindowAnimator.Play(isImmediately ? hiddenAnimationName : closeAnimationName);
+        }
 
         if (isImmediately)
             CloseEnd();
