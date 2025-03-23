@@ -106,6 +106,8 @@ public class GameManager : MonoBehaviour
     private void GameVictory()
     {
         scoreSystem.EndGame();
+        WindowsService.HideWindow<GameplayWindow>(true);
+        WindowsService.ShowWindow<VictoryWindow>(false);
         Debug.Log("Victory");
         isGameActive = false;
     }
@@ -113,6 +115,8 @@ public class GameManager : MonoBehaviour
     private void GameOver()
     {
         scoreSystem.EndGame();
+        WindowsService.HideWindow<GameplayWindow>(true);
+        WindowsService.ShowWindow<DefeatWindow>(false);
         Debug.Log("Defeat");
         isGameActive = false;
     }
