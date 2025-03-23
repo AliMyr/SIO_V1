@@ -29,12 +29,12 @@ public class PlayerCharacter : Character
     public override void Initialize()
     {
         base.Initialize();
-        MovableComponent.Initialize(characterData);
+        MovableComponent.Initialize(CharacterTarget, CharacterData);
     }
 
     public override void Update()
     {
-        if (!LiveComponent.IsAlive || GameManager.Instance.IsGameActive)
+        if (!LiveComponent.IsAlive || !GameManager.Instance.IsGameActive) return;
 
         movementVector.Set(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         movementVector.Normalize();
@@ -46,10 +46,10 @@ public class PlayerCharacter : Character
             Vector3 rotationDirection = CharacterTarget.transform.position - transform.position;
             MovableComponent.Rotation(rotationDirection);
 
-            if (Input.GetButtonDown("Jump") && characterData.TimeBetweenAttackCounter <= 0)
+            if (Input.GetButtonDown("Jump") && CharacterData.TimeBetweenAttackCounter <= 0)
             {
                 DamageComponent?.MakeDamage(CharacterTarget);
-                characterData.TimeBetweenAttackCounter = characterData.TimeBetweenAttacks;
+                CharacterData.TimeBetweenAttackCounter = CharacterData.TimeBetweenAttacks;
             }
         }
         else
@@ -57,7 +57,7 @@ public class PlayerCharacter : Character
             MovableComponent.Rotation(movementVector);
         }
 
-        if (characterData.TimeBetweenAttackCounter > 0)
-            characterData.TimeBetweenAttackCounter -= Time.deltaTime;
+        if (CharacterData.TimeBetweenAttackCounter > 0)
+            CharacterData.TimeBetweenAttackCounter -= Time.deltaTime;
     }
 }

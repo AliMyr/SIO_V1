@@ -1,12 +1,12 @@
 public class CharacterDamageComponent : IDamageComponent
 {
-    private readonly float damage;
+    private float damage;
 
     public float Damage => damage;
 
-    public CharacterDamageComponent(float damage = 10f)
+    public void Initialize(Character selfCharacter, CharacterData characterData)
     {
-        this.damage = damage;
+        damage = characterData.Damage;
     }
 
     public void MakeDamage(Character characterTarget)

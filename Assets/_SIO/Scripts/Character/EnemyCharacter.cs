@@ -14,7 +14,7 @@ public class EnemyCharacter : Character
 
     public override void Update()
     {
-        if(!LiveComponent.IsAlive || !GameManager.Instance.IsGameActive) return;
+        if (!LiveComponent.IsAlive || !GameManager.Instance.IsGameActive) return;
         if (currentState != AiState.MoveToTarget) return;
 
         Vector3 direction = CharacterTarget.transform.position - transform.position;
@@ -24,13 +24,13 @@ public class EnemyCharacter : Character
         MovableComponent.Move(direction);
         MovableComponent.Rotation(direction);
 
-        if (distanceSqr < AttackRangeSqr && characterData.TimeBetweenAttackCounter <= 0)
+        if (distanceSqr < AttackRangeSqr && CharacterData.TimeBetweenAttackCounter <= 0)
         {
             DamageComponent?.MakeDamage(CharacterTarget);
-            characterData.TimeBetweenAttackCounter = characterData.TimeBetweenAttacks;
+            CharacterData.TimeBetweenAttackCounter = CharacterData.TimeBetweenAttacks;
         }
 
-        if (characterData.TimeBetweenAttackCounter > 0)
-            characterData.TimeBetweenAttackCounter -= Time.deltaTime;
+        if (CharacterData.TimeBetweenAttackCounter > 0)
+            CharacterData.TimeBetweenAttackCounter -= Time.deltaTime;
     }
 }

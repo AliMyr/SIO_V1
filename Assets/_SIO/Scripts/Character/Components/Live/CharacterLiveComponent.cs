@@ -11,16 +11,11 @@ public class CharacterLiveComponent : ILiveComponent
     public event Action<Character> OnCharacterDeath;
     public event Action<Character> OnCharacterHealthChange;
 
-    public float MaxHealth
-    {
-        get => maxHealth;
-        set => maxHealth = Mathf.Max(0, value);
-    }
-
+    public float MaxHealth => maxHealth;
     public float Health
     {
         get => currentHealth;
-        set
+        private set
         {
             currentHealth = Mathf.Clamp(value, 0, maxHealth);
             if (currentHealth <= 0) SetDeath();
@@ -29,11 +24,12 @@ public class CharacterLiveComponent : ILiveComponent
 
     public bool IsAlive => isAlive;
 
-    public CharacterLiveComponent(float maxHealth = 50f)
+    public void Initialize(Character selfCharacter, CharacterData characterData)
     {
+        this.selfCharacter = selfCharacter;
+        maxHealth = characterData.MaxHealth;
+        currentHealth = maxHealth;
         isAlive = true;
-        this.maxHealth = maxHealth;
-        this.currentHealth = maxHealth;
     }
 
     public void SetDamage(float damage)
@@ -45,12 +41,6 @@ public class CharacterLiveComponent : ILiveComponent
     private void SetDeath()
     {
         OnCharacterDeath?.Invoke(selfCharacter);
-        Debug.Log("Character died!");
         isAlive = false;
-    }
-
-    public void Initialize(Character selfCharacter)
-    {
-        this.selfCharacter = selfCharacter;
     }
 }

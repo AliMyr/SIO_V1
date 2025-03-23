@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Character : MonoBehaviour
 {
     [SerializeField] private CharacterType characterType;
-    [SerializeField] protected CharacterData characterData;
+    [SerializeField] private CharacterData characterData;
 
     public virtual Character CharacterTarget { get; }
     public CharacterType CharacterType => characterType;
@@ -17,11 +15,12 @@ public abstract class Character : MonoBehaviour
     public virtual void Initialize()
     {
         MovableComponent = new CharacterMovementComponent();
-        LiveComponent = new CharacterLiveComponent(characterData?.MaxHealth ?? 50f);
-        DamageComponent = new CharacterDamageComponent(characterData?.Damage ?? 10f);
+        LiveComponent = new CharacterLiveComponent();
+        DamageComponent = new CharacterDamageComponent();
 
-        MovableComponent.Initialize(characterData);
-        LiveComponent.Initialize(this);
+        MovableComponent.Initialize(CharacterTarget, characterData);
+        LiveComponent.Initialize(CharacterTarget, characterData);
+        DamageComponent.Initialize(CharacterTarget, characterData);
     }
 
     public abstract void Update();
