@@ -10,7 +10,7 @@ public class PlayerCharacter : Character
         {
             Character target = null;
             float minDistanceSqr = float.MaxValue;
-            var characters = GameManager.Instance.CharacterFactory.ActiveCharacter;
+            var characters = GameManager.Instance.CharacterFactory.ActiveCharacters;
 
             foreach (var character in characters)
             {

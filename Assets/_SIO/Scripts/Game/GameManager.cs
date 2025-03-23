@@ -8,7 +8,7 @@ public class GameManager : MonoBehaviour
 
     private ScoreSystem scoreSystem;
     private float gameSessionTime;
-    private float timeBetweenEnemySpawn;
+    private float enemySpawnTimer;
     private bool isGameActive;
 
     public static GameManager Instance { get; private set; }
@@ -41,16 +41,14 @@ public class GameManager : MonoBehaviour
     {
         if (isGameActive) return;
 
+        isGameActive = true;
+        gameSessionTime = 0;
+        enemySpawnTimer = gameData.TimeBetweenEnemySpawn;
+        scoreSystem.StartGame();
+
         var player = characterFactory.GetCharacter(CharacterType.Player);
         player.transform.position = Vector3.zero;
-        player.gameObject.SetActive(true);
-        player.Initialize();
-        player.LiveComponent.OnCharacterDeath += CharacterDeathHandler;
-
-        gameSessionTime = 0;
-        timeBetweenEnemySpawn = gameData.TimeBetweenEnemySpawn;
-        scoreSystem.startGame();
-        isGameActive = true;
+        player.LiveComponent.OnCharacterDeath += OnCharacterDeath;
     }
 
     private void Update()
@@ -59,36 +57,34 @@ public class GameManager : MonoBehaviour
 
         float deltaTime = Time.deltaTime;
         gameSessionTime += deltaTime;
-        timeBetweenEnemySpawn -= deltaTime;
+        enemySpawnTimer -= deltaTime;
 
-        if (timeBetweenEnemySpawn <= 0)
+        if (enemySpawnTimer <= 0)
         {
             SpawnEnemy();
-            timeBetweenEnemySpawn = gameData.TimeBetweenEnemySpawn;
+            enemySpawnTimer = gameData.TimeBetweenEnemySpawn;
         }
 
-        if (gameSessionTime >= gameData.SessionTimeSecond)
+        if (gameSessionTime >= gameData.SessionTimeSeconds)
         {
             GameVictory();
         }
     }
 
-    private void CharacterDeathHandler(Character deathCharacter)
+    private void OnCharacterDeath(Character character)
     {
-        if (deathCharacter == null) return;
+        if (character == null) return;
 
-        deathCharacter.LiveComponent.OnCharacterDeath -= CharacterDeathHandler;
-        deathCharacter.gameObject.SetActive(false);
-        characterFactory.ReturnCharacter(deathCharacter);
+        character.LiveComponent.OnCharacterDeath -= OnCharacterDeath;
+        characterFactory.ReturnCharacter(character);
 
-        switch (deathCharacter.CharacterType)
+        if (character.CharacterType == CharacterType.Player)
         {
-            case CharacterType.Player:
-                GameOver();
-                break;
-            case CharacterType.DefaultEnemy:
-                scoreSystem.AddScore(deathCharacter.CharacterData.ScoreCost);
-                break;
+            GameOver();
+        }
+        else
+        {
+            scoreSystem.AddScore(character.CharacterData.ScoreCost);
         }
     }
 
@@ -99,26 +95,28 @@ public class GameManager : MonoBehaviour
         float offsetX = Random.Range(gameData.MinSpawnOffset, gameData.MaxSpawnOffset) * (Random.value > 0.5f ? 1 : -1);
         float offsetZ = Random.Range(gameData.MinSpawnOffset, gameData.MaxSpawnOffset) * (Random.value > 0.5f ? 1 : -1);
         enemy.transform.position = new Vector3(playerPos.x + offsetX, 0, playerPos.z + offsetZ);
-        enemy.gameObject.SetActive(true);
-        enemy.Initialize();
-        enemy.LiveComponent.OnCharacterDeath += CharacterDeathHandler;
+        enemy.LiveComponent.OnCharacterDeath += OnCharacterDeath;
     }
 
     private void GameVictory()
     {
-        scoreSystem.EndGame();
-        WindowsService.HideWindow<GameplayWindow>(true);
-        WindowsService.ShowWindow<VictoryWindow>(false);
+        EndGame();
+        windowsService.HideWindow<GameplayWindow>(true);
+        windowsService.ShowWindow<VictoryWindow>(false);
         Debug.Log("Victory");
-        isGameActive = false;
     }
 
     private void GameOver()
     {
-        scoreSystem.EndGame();
-        WindowsService.HideWindow<GameplayWindow>(true);
-        WindowsService.ShowWindow<DefeatWindow>(false);
+        EndGame();
+        windowsService.HideWindow<GameplayWindow>(true);
+        windowsService.ShowWindow<DefeatWindow>(false);
         Debug.Log("Defeat");
+    }
+
+    private void EndGame()
+    {
         isGameActive = false;
+        scoreSystem.EndGame();
     }
 }

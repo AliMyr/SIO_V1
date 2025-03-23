@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ScoreSystem
@@ -9,17 +7,17 @@ public class ScoreSystem
 
     public event Action<int> OnScoreUpdated;
 
-
     public int Score { get; private set; }
     public int MaxScore { get; private set; }
     public bool IsNewScoreRecord { get; private set; }
 
-    public void startGame()
+    public void StartGame()
     {
         Score = 0;
         MaxScore = PlayerPrefs.GetInt(SAVE_NAME, 0);
         IsNewScoreRecord = false;
     }
+
     public void EndGame()
     {
         if (Score > MaxScore)
@@ -28,7 +26,6 @@ public class ScoreSystem
             PlayerPrefs.SetInt(SAVE_NAME, MaxScore);
             IsNewScoreRecord = true;
         }
-        
     }
 
     public void AddScore(int earnedScore)
