@@ -14,6 +14,7 @@ public class EnemyCharacter : Character
 
     public override void Update()
     {
+        if(!LiveComponent.IsAlive || !GameManager.Instance.IsGameActive) return;
         if (currentState != AiState.MoveToTarget) return;
 
         Vector3 direction = CharacterTarget.transform.position - transform.position;

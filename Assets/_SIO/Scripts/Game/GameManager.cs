@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public WindowsService WindowsService => windowsService;
     public ScoreSystem ScoreSystem => scoreSystem;
     public float GameSessionTime => gameSessionTime;
+    public bool IsGameActive => isGameActive;
 
     private void Awake()
     {

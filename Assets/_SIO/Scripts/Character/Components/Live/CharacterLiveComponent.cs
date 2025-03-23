@@ -6,6 +6,7 @@ public class CharacterLiveComponent : ILiveComponent
     private Character selfCharacter;
     private float currentHealth;
     private float maxHealth;
+    private bool isAlive = false;
 
     public event Action<Character> OnCharacterDeath;
     public event Action<Character> OnCharacterHealthChange;
@@ -26,8 +27,11 @@ public class CharacterLiveComponent : ILiveComponent
         }
     }
 
+    public bool IsAlive => isAlive;
+
     public CharacterLiveComponent(float maxHealth = 50f)
     {
+        isAlive = true;
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
     }
@@ -42,6 +46,7 @@ public class CharacterLiveComponent : ILiveComponent
     {
         OnCharacterDeath?.Invoke(selfCharacter);
         Debug.Log("Character died!");
+        isAlive = false;
     }
 
     public void Initialize(Character selfCharacter)

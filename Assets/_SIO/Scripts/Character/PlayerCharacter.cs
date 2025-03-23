@@ -34,6 +34,8 @@ public class PlayerCharacter : Character
 
     public override void Update()
     {
+        if (!LiveComponent.IsAlive || GameManager.Instance.IsGameActive)
+
         movementVector.Set(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
         movementVector.Normalize();
 

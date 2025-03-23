@@ -7,5 +7,6 @@ public interface ILiveComponent : ICharacterComponent
 
     float MaxHealth { get; set; }
     float Health { get; set; }
+    bool IsAlive { get;}
     void SetDamage(float damage);
 }
