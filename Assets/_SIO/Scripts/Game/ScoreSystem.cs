@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,10 @@ using UnityEngine;
 public class ScoreSystem
 {
     private const string SAVE_NAME = "MaxScore";
+
+    public event Action<int> OnScoreUpdated;
+
+
     public int Score { get; private set; }
     public int MaxScore { get; private set; }
 
@@ -25,5 +30,6 @@ public class ScoreSystem
     public void AddScore(int earnedScore)
     {
         Score += earnedScore;
+        OnScoreUpdated?.Invoke(Score);
     }
 }

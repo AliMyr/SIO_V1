@@ -31,6 +31,9 @@ public class GameplayWindow : Window
 
         UpdateHealthVisual(player);
         player.LiveComponent.OnCharacterHealthChange += UpdateHealthVisual;
+
+        UpdateScore(GameManager.Instance.ScoreSystem.Score);
+        GameManager.Instance.ScoreSystem.OnScoreUpdated += UpdateScore;
     }
 
     protected override void CloseStart()
@@ -42,6 +45,7 @@ public class GameplayWindow : Window
             return;
 
         player.LiveComponent.OnCharacterHealthChange -= UpdateHealthVisual;
+        GameManager.Instance.ScoreSystem.OnScoreUpdated -= UpdateScore;
     }
 
     private void UpdateHealthVisual(Character character)
@@ -52,5 +56,20 @@ public class GameplayWindow : Window
         healthText.text = health + "/" + healthMax;
         healthSlider.maxValue = healthMax;
         healthSlider.value = health;
+    }
+
+    private void UpdateScore(int scoreCount)
+    {
+        coinsText.text = scoreCount.ToString();
+    }
+
+    private void Update()
+    {
+        float sessionTime = GameManager.Instance.GameSessionTime;
+        int minutes = (int)(sessionTime / 60);
+        int seconds = (int)(sessionTime % 60);
+        string zero = "0";
+
+        timerText.text = minutes + ":" + ((seconds < 10) ? zero : "") + seconds;
     }
 }

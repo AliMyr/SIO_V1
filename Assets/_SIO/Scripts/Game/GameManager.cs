@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
     public CharacterFactory CharacterFactory => characterFactory;
     public WindowsService WindowsService => windowsService;
+    public ScoreSystem ScoreSystem => scoreSystem;
+    public float GameSessionTime => gameSessionTime;
 
     private void Awake()
     {
