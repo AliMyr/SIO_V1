@@ -60,7 +60,7 @@ public class GameplayWindow : Window
 
     private void UpdateScore(int scoreCount)
     {
-        coinsText.text = scoreCount.ToString();
+        coinsText.text = "score: " + scoreCount;
     }
 
     private void Update()

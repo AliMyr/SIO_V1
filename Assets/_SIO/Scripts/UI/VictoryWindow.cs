@@ -29,7 +29,7 @@ public class VictoryWindow : Window
     protected override void OpenStart()
     {
         base.OpenStart();
-        recordText.text = GameManager.Instance.ScoreSystem.Score.ToString();
+        recordText.text = "Score: " + GameManager.Instance.ScoreSystem.Score;
         newRecordText.gameObject.SetActive(GameManager.Instance.ScoreSystem.IsNewScoreRecord);
     }
 }
