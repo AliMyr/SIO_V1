@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,67 +6,47 @@ public class CharacterFactory : MonoBehaviour
     [SerializeField] private Character playerCharacterPrefab;
     [SerializeField] private Character enemyCharacterPrefab;
 
-    private Dictionary<CharacterType, Queue<Character>> disabledCharacters
-        = new Dictionary<CharacterType, Queue<Character>>();
+    private readonly Dictionary<CharacterType, Queue<Character>> disabledCharacters = new();
+    private readonly List<Character> activeCharacters = new();
 
-    private List<Character> activeCharacter = new List<Character>();
-
-    public Character Player
-    {
-        get; private set;
-    }
-
-    public List<Character> ActiveCharacter => activeCharacter;
+    public Character Player { get; private set; }
+    public List<Character> ActiveCharacters => activeCharacters;
 
     public Character GetCharacter(CharacterType type)
     {
-        Character character = null;
-        if (disabledCharacters.ContainsKey(type))
+        if (!disabledCharacters.ContainsKey(type))
         {
-            if (disabledCharacters[type].Count > 0)
-            {
-                character = disabledCharacters[type].Dequeue();
-            }
-        }
-        else
-        {
-            disabledCharacters.Add(type, new Queue<Character>());
+            disabledCharacters[type] = new Queue<Character>();
         }
 
-        if (character == null)
-        {
-            character = InstantiateCharacter(type);
-        }
-        activeCharacter.Add(character);
+        Character character = disabledCharacters[type].Count > 0
+            ? disabledCharacters[type].Dequeue()
+            : InstantiateCharacter(type);
+
+        character.gameObject.SetActive(true);
+        character.Initialize();
+        activeCharacters.Add(character);
         return character;
     }
 
     public void ReturnCharacter(Character character)
     {
-        Queue<Character> characters = disabledCharacters[character.CharacterType];
-        character.Enqueue(character);
-
-        activeCharacter.Remove(character);
+        character.gameObject.SetActive(false);
+        activeCharacters.Remove(character);
+        disabledCharacters[character.CharacterType].Enqueue(character);
     }
 
     private Character InstantiateCharacter(CharacterType type)
     {
-        Character character = null;
-        switch (type)
+        Character character = type switch
         {
-            case CharacterType.Player:
-                character = GameObject.Instantiate(playerCharacterPrefab, null);
-                Player = character;
-                break;
+            CharacterType.Player => Instantiate(playerCharacterPrefab),
+            CharacterType.DefaultEnemy => Instantiate(enemyCharacterPrefab),
+            _ => throw new System.ArgumentOutOfRangeException(nameof(type), "Unknown character type!")
+        };
 
-            case CharacterType.DefaultEnemy:
-                character = GameObject.Instantiate(enemyCharacterPrefab, null);
-                break;
-            
-            default:
-                Debug.LogError("Unknown character type: " +  type);
-                break;
-        }
+        character.Initialize();
+        if (type == CharacterType.Player) Player = character;
         return character;
     }
 }
