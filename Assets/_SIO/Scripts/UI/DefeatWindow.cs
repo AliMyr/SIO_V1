@@ -13,6 +13,7 @@ public class DefeatWindow : Window
 
     public override void Initialize()
     {
+        base.Initialize();
         restartButton.onClick.AddListener(OnRestartButtonClicked);
         returnToMainMenuButton.onClick.AddListener(OnReturnToMainMenuButtonClicked);
     }

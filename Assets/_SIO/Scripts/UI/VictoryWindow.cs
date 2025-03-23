@@ -16,6 +16,7 @@ public class VictoryWindow : Window
 
     public override void Initialize()
     {
+        base.Initialize();
         continueButton.onClick.AddListener(ContinueButtonClickHandler);
     }
 
