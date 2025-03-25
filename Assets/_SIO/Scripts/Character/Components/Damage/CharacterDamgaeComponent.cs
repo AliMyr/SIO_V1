@@ -12,5 +12,6 @@ public class CharacterDamageComponent : IDamageComponent
     public void MakeDamage(Character characterTarget)
     {
         characterTarget?.LiveComponent?.SetDamage(damage);
+        characterTarget.AnimationComponent.SetTrigger("AttackTrigger");
     }
 }
