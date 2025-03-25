@@ -38,6 +38,6 @@ public class MainMenuWindow : Window
     private void OpenOptionsHandler()
     {
         Hide(false);
-        GameManager.Instance.WindowsService.ShowWindow<GameplayWindow>(false);
+        GameManager.Instance.WindowsService.ShowWindow<OptionsWindow>(true);
     }
 }
