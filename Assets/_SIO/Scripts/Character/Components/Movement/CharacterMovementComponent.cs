@@ -15,9 +15,15 @@ public class CharacterMovementComponent : IMovable
 
     public void Move(Vector3 direction)
     {
+        if (direction == Vector3.zero)
+        {
+            character.AnimationComponent.SetValue("Movement", 0);
+            return;
+        }
         if (direction.sqrMagnitude < 0.01f) return;
         Vector3 move = direction.normalized * speed * Time.deltaTime;
         character.CharacterController.Move(move);
+        character.AnimationComponent.SetValue("Movement", direction.magnitude);
     }
 
     public void Rotation(Vector3 direction)
